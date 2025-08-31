@@ -346,8 +346,9 @@
             </div>
 
             <!-- 題目標題 -->
-            <div class="bg-white rounded-lg p-6 mb-6 text-center">
-                <h3 class="text-2xl font-bold text-gray-800" id="questionText"></h3>
+            <div class="bg-white rounded-lg p-6 mb-4 text-center">
+                <h3 class="text-2xl font-bold text-gray-800 mb-3" id="questionText"></h3>
+                <p class="text-gray-600 text-lg" id="questionDescription"></p>
             </div>
 
             <!-- 選項卡片區域 -->
@@ -391,634 +392,767 @@
     <script>
         // 題目資料
         const questions = [
+    {
+        "question": "宿舍熱水",
+        "description": "你住的宿舍區連續三天在晚間尖峰時段沒有熱水，向宿舍管理員反應，只得到「會再跟總務處催」的答覆，但情況沒有改善。",
+        "options": [
             {
-                question: "你最喜歡哪種學習方式？",
-                options: [
-                    {
-                        text: "A. 看書自學",
-                        score: 15,
-                        fortune: "機會",
-                        explanation: "自學能力強，培養獨立思考！",
-                        fortuneDetail: "機會：獲得額外學習資源"
-                    },
-                    {
-                        text: "B. 小組討論",
-                        score: 20,
-                        fortune: "機會", 
-                        explanation: "團隊合作，互相學習成長！",
-                        fortuneDetail: "機會：結交學習夥伴"
-                    },
-                    {
-                        text: "C. 聽老師講課",
-                        score: 10,
-                        fortune: "命運",
-                        explanation: "傳統學習，穩紮穩打！",
-                        fortuneDetail: "命運：需要更主動學習"
-                    },
-                    {
-                        text: "D. 實作練習",
-                        score: 25,
-                        fortune: "機會",
-                        explanation: "動手實作，學以致用！",
-                        fortuneDetail: "機會：獲得實務經驗"
-                    }
-                ]
+                "text": "A. 集合多位同學的宿網IP，到校長信箱集體投訴。",
+                "score": 5,
+                "fortune": "機會",
+                "fortuneScore": -2,
+                "explanation": "校長信箱的信件被轉到總務處，處理速度加快了。",
+                "fortuneDetail": "總務處知道是你們這棟宿舍在投訴，未來對你們的報修申請會「特別關照」，審核變得更嚴格。"
             },
             {
-                question: "你最想去哪裡旅行？",
-                options: [
-                    {
-                        text: "A. 日本賞櫻",
-                        score: 18,
-                        fortune: "機會",
-                        explanation: "體驗異國文化，開拓視野！",
-                        fortuneDetail: "機會：遇見新朋友"
-                    },
-                    {
-                        text: "B. 歐洲古堡",
-                        score: 22,
-                        fortune: "機會",
-                        explanation: "探索歷史古蹟，增長見識！",
-                        fortuneDetail: "機會：發現隱藏景點"
-                    },
-                    {
-                        text: "C. 台灣環島",
-                        score: 15,
-                        fortune: "命運",
-                        explanation: "認識家鄉之美，在地深度遊！",
-                        fortuneDetail: "命運：天氣可能不佳"
-                    },
-                    {
-                        text: "D. 南極探險",
-                        score: 30,
-                        fortune: "機會",
-                        explanation: "勇敢冒險，挑戰極限！",
-                        fortuneDetail: "機會：看見極光奇景"
-                    }
-                ]
+                "text": "B. 在Dcard等學生論壇發文，附上水龍頭流出冷水的影片，引發輿論。",
+                "score": 10,
+                "fortune": "命運",
+                "fortuneScore": -4,
+                "explanation": "文章被推爆，學校為避免形象受損，兩天內就修好了。",
+                "fortuneDetail": "宿舍輔導員約談你，認為你的行為破壞校譽，給你留下「麻煩製造者」的印象。"
             },
             {
-                question: "你最喜歡的運動是？",
-                options: [
-                    {
-                        text: "A. 籃球",
-                        score: 20,
-                        fortune: "機會",
-                        explanation: "團隊運動，培養合作精神！",
-                        fortuneDetail: "機會：加入校隊"
-                    },
-                    {
-                        text: "B. 游泳",
-                        score: 25,
-                        fortune: "機會",
-                        explanation: "全身運動，強健體魄！",
-                        fortuneDetail: "機會：破個人紀錄"
-                    },
-                    {
-                        text: "C. 瑜珈",
-                        score: 12,
-                        fortune: "命運",
-                        explanation: "靜心修身，平衡身心！",
-                        fortuneDetail: "命運：需要更多耐心"
-                    },
-                    {
-                        text: "D. 攀岩",
-                        score: 28,
-                        fortune: "機會",
-                        explanation: "挑戰自我，突破極限！",
-                        fortuneDetail: "機會：征服新路線"
-                    }
-                ]
+                "text": "C. 摸摸鼻子，錯開尖峰時段，大不了洗冷水澡。",
+                "score": -3,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "你的忍耐沒有解決任何問題，熱水問題拖了一星期才解決。",
+                "fortuneDetail": "無副作用。"
             },
             {
-                question: "你最想學習的技能是？",
-                options: [
-                    {
-                        text: "A. 程式設計",
-                        score: 30,
-                        fortune: "機會",
-                        explanation: "未來趨勢，邏輯思維訓練！",
-                        fortuneDetail: "機會：獲得實習機會"
-                    },
-                    {
-                        text: "B. 烹飪料理",
-                        score: 18,
-                        fortune: "機會",
-                        explanation: "生活技能，創意發揮！",
-                        fortuneDetail: "機會：開發新食譜"
-                    },
-                    {
-                        text: "C. 樂器演奏",
-                        score: 15,
-                        fortune: "命運",
-                        explanation: "陶冶性情，藝術修養！",
-                        fortuneDetail: "命運：需要長期練習"
-                    },
-                    {
-                        text: "D. 外語學習",
-                        score: 25,
-                        fortune: "機會",
-                        explanation: "國際溝通，拓展機會！",
-                        fortuneDetail: "機會：獲得交換機會"
-                    }
-                ]
-            },
-            {
-                question: "你最喜歡的季節是？",
-                options: [
-                    {
-                        text: "A. 春天",
-                        score: 20,
-                        fortune: "機會",
-                        explanation: "萬物復甦，充滿希望！",
-                        fortuneDetail: "機會：新的開始"
-                    },
-                    {
-                        text: "B. 夏天",
-                        score: 15,
-                        fortune: "命運",
-                        explanation: "熱情活力，戶外活動！",
-                        fortuneDetail: "命運：可能太炎熱"
-                    },
-                    {
-                        text: "C. 秋天",
-                        score: 25,
-                        fortune: "機會",
-                        explanation: "收穫季節，成果豐碩！",
-                        fortuneDetail: "機會：豐收好運"
-                    },
-                    {
-                        text: "D. 冬天",
-                        score: 12,
-                        fortune: "命運",
-                        explanation: "寧靜沉澱，內心平和！",
-                        fortuneDetail: "命運：需要保暖"
-                    }
-                ]
-            },
-            {
-                question: "你最想擁有的超能力是？",
-                options: [
-                    {
-                        text: "A. 飛行能力",
-                        score: 28,
-                        fortune: "機會",
-                        explanation: "自由翱翔，無拘無束！",
-                        fortuneDetail: "機會：探索新世界"
-                    },
-                    {
-                        text: "B. 讀心術",
-                        score: 22,
-                        fortune: "機會",
-                        explanation: "了解他人，溝通無礙！",
-                        fortuneDetail: "機會：化解誤會"
-                    },
-                    {
-                        text: "C. 隱形能力",
-                        score: 10,
-                        fortune: "命運",
-                        explanation: "低調行事，避免麻煩！",
-                        fortuneDetail: "命運：可能太孤單"
-                    },
-                    {
-                        text: "D. 時間控制",
-                        score: 35,
-                        fortune: "機會",
-                        explanation: "掌控時間，改變命運！",
-                        fortuneDetail: "機會：重來機會"
-                    }
-                ]
-            },
-            {
-                question: "你最喜歡的顏色是？",
-                options: [
-                    {
-                        text: "A. 藍色",
-                        score: 18,
-                        fortune: "機會",
-                        explanation: "冷靜理性，值得信賴！",
-                        fortuneDetail: "機會：獲得他人信任"
-                    },
-                    {
-                        text: "B. 紅色",
-                        score: 25,
-                        fortune: "機會",
-                        explanation: "熱情活力，勇往直前！",
-                        fortuneDetail: "機會：成為領導者"
-                    },
-                    {
-                        text: "C. 綠色",
-                        score: 15,
-                        fortune: "命運",
-                        explanation: "自然和諧，平衡穩定！",
-                        fortuneDetail: "命運：需要更多行動"
-                    },
-                    {
-                        text: "D. 紫色",
-                        score: 22,
-                        fortune: "機會",
-                        explanation: "神秘優雅，獨特品味！",
-                        fortuneDetail: "機會：展現個人魅力"
-                    }
-                ]
-            },
-            {
-                question: "你最想住在哪種環境？",
-                options: [
-                    {
-                        text: "A. 繁華都市",
-                        score: 20,
-                        fortune: "機會",
-                        explanation: "機會豐富，生活便利！",
-                        fortuneDetail: "機會：職涯發展"
-                    },
-                    {
-                        text: "B. 寧靜鄉村",
-                        score: 15,
-                        fortune: "命運",
-                        explanation: "遠離塵囂，心靈平靜！",
-                        fortuneDetail: "命運：資源較少"
-                    },
-                    {
-                        text: "C. 海邊小鎮",
-                        score: 25,
-                        fortune: "機會",
-                        explanation: "面朝大海，心胸開闊！",
-                        fortuneDetail: "機會：靈感泉源"
-                    },
-                    {
-                        text: "D. 山中小屋",
-                        score: 18,
-                        fortune: "機會",
-                        explanation: "親近自然，身心健康！",
-                        fortuneDetail: "機會：發現自然奧秘"
-                    }
-                ]
-            },
-            {
-                question: "你最喜歡的動物是？",
-                options: [
-                    {
-                        text: "A. 貓咪",
-                        score: 16,
-                        fortune: "命運",
-                        explanation: "獨立自主，優雅迷人！",
-                        fortuneDetail: "命運：有時太任性"
-                    },
-                    {
-                        text: "B. 狗狗",
-                        score: 22,
-                        fortune: "機會",
-                        explanation: "忠誠友善，最佳夥伴！",
-                        fortuneDetail: "機會：結交真心朋友"
-                    },
-                    {
-                        text: "C. 老鷹",
-                        score: 28,
-                        fortune: "機會",
-                        explanation: "高瞻遠矚，勇敢翱翔！",
-                        fortuneDetail: "機會：看見更大格局"
-                    },
-                    {
-                        text: "D. 海豚",
-                        score: 24,
-                        fortune: "機會",
-                        explanation: "聰明友善，溝通高手！",
-                        fortuneDetail: "機會：成為溝通橋樑"
-                    }
-                ]
-            },
-            {
-                question: "你最想從事的職業是？",
-                options: [
-                    {
-                        text: "A. 老師",
-                        score: 20,
-                        fortune: "機會",
-                        explanation: "傳道授業，影響他人！",
-                        fortuneDetail: "機會：培育未來人才"
-                    },
-                    {
-                        text: "B. 醫生",
-                        score: 30,
-                        fortune: "機會",
-                        explanation: "救死扶傷，崇高使命！",
-                        fortuneDetail: "機會：拯救生命"
-                    },
-                    {
-                        text: "C. 藝術家",
-                        score: 18,
-                        fortune: "命運",
-                        explanation: "創意無限，表達自我！",
-                        fortuneDetail: "命運：收入不穩定"
-                    },
-                    {
-                        text: "D. 企業家",
-                        score: 35,
-                        fortune: "機會",
-                        explanation: "創新創業，改變世界！",
-                        fortuneDetail: "機會：創造就業機會"
-                    }
-                ]
-            },
-            {
-                question: "你最喜歡的食物類型是？",
-                options: [
-                    {
-                        text: "A. 中式料理",
-                        score: 18,
-                        fortune: "機會",
-                        explanation: "傳統美味，文化傳承！",
-                        fortuneDetail: "機會：學習傳統技藝"
-                    },
-                    {
-                        text: "B. 日式料理",
-                        score: 22,
-                        fortune: "機會",
-                        explanation: "精緻美學，健康養生！",
-                        fortuneDetail: "機會：體驗職人精神"
-                    },
-                    {
-                        text: "C. 義式料理",
-                        score: 20,
-                        fortune: "機會",
-                        explanation: "浪漫情調，家庭溫暖！",
-                        fortuneDetail: "機會：享受慢活生活"
-                    },
-                    {
-                        text: "D. 素食料理",
-                        score: 15,
-                        fortune: "命運",
-                        explanation: "健康環保，愛護地球！",
-                        fortuneDetail: "命運：選擇較少"
-                    }
-                ]
-            },
-            {
-                question: "你最想要的生活節奏是？",
-                options: [
-                    {
-                        text: "A. 快節奏",
-                        score: 25,
-                        fortune: "機會",
-                        explanation: "效率至上，成就滿滿！",
-                        fortuneDetail: "機會：快速成長"
-                    },
-                    {
-                        text: "B. 慢節奏",
-                        score: 18,
-                        fortune: "命運",
-                        explanation: "享受當下，品味生活！",
-                        fortuneDetail: "命運：可能錯過機會"
-                    },
-                    {
-                        text: "C. 有彈性",
-                        score: 22,
-                        fortune: "機會",
-                        explanation: "靈活應變，平衡兼顧！",
-                        fortuneDetail: "機會：適應各種情況"
-                    },
-                    {
-                        text: "D. 規律穩定",
-                        score: 16,
-                        fortune: "命運",
-                        explanation: "按部就班，安全穩妥！",
-                        fortuneDetail: "命運：缺乏驚喜"
-                    }
-                ]
-            },
-            {
-                question: "你最重視的價值觀是？",
-                options: [
-                    {
-                        text: "A. 誠實正直",
-                        score: 25,
-                        fortune: "機會",
-                        explanation: "品格高尚，值得信賴！",
-                        fortuneDetail: "機會：獲得他人尊重"
-                    },
-                    {
-                        text: "B. 創新進取",
-                        score: 30,
-                        fortune: "機會",
-                        explanation: "勇於突破，引領潮流！",
-                        fortuneDetail: "機會：成為先驅者"
-                    },
-                    {
-                        text: "C. 和諧共處",
-                        score: 18,
-                        fortune: "命運",
-                        explanation: "重視關係，團結合作！",
-                        fortuneDetail: "命運：有時需要妥協"
-                    },
-                    {
-                        text: "D. 自由獨立",
-                        score: 22,
-                        fortune: "機會",
-                        explanation: "追求自我，不受束縛！",
-                        fortuneDetail: "機會：開創自己的路"
-                    }
-                ]
-            },
-            {
-                question: "你最想擁有的才能是？",
-                options: [
-                    {
-                        text: "A. 音樂天賦",
-                        score: 20,
-                        fortune: "機會",
-                        explanation: "感動人心，藝術修養！",
-                        fortuneDetail: "機會：成為音樂家"
-                    },
-                    {
-                        text: "B. 運動天賦",
-                        score: 25,
-                        fortune: "機會",
-                        explanation: "強健體魄，競技精神！",
-                        fortuneDetail: "機會：成為運動員"
-                    },
-                    {
-                        text: "C. 語言天賦",
-                        score: 28,
-                        fortune: "機會",
-                        explanation: "溝通無礙，國際視野！",
-                        fortuneDetail: "機會：成為外交官"
-                    },
-                    {
-                        text: "D. 數學天賦",
-                        score: 15,
-                        fortune: "命運",
-                        explanation: "邏輯清晰，理性思考！",
-                        fortuneDetail: "命運：可能太理性"
-                    }
-                ]
-            },
-            {
-                question: "你最喜歡的休閒活動是？",
-                options: [
-                    {
-                        text: "A. 看電影",
-                        score: 16,
-                        fortune: "命運",
-                        explanation: "放鬆娛樂，體驗故事！",
-                        fortuneDetail: "命運：容易沉迷"
-                    },
-                    {
-                        text: "B. 閱讀書籍",
-                        score: 22,
-                        fortune: "機會",
-                        explanation: "增長知識，開拓視野！",
-                        fortuneDetail: "機會：獲得新知識"
-                    },
-                    {
-                        text: "C. 戶外健行",
-                        score: 25,
-                        fortune: "機會",
-                        explanation: "親近自然，強身健體！",
-                        fortuneDetail: "機會：發現美景"
-                    },
-                    {
-                        text: "D. 手作DIY",
-                        score: 20,
-                        fortune: "機會",
-                        explanation: "動手創作，成就感滿滿！",
-                        fortuneDetail: "機會：開發新技能"
-                    }
-                ]
-            },
-            {
-                question: "你最想要的人際關係是？",
-                options: [
-                    {
-                        text: "A. 知心好友",
-                        score: 25,
-                        fortune: "機會",
-                        explanation: "深度交流，互相支持！",
-                        fortuneDetail: "機會：遇見知音"
-                    },
-                    {
-                        text: "B. 廣泛人脈",
-                        score: 22,
-                        fortune: "機會",
-                        explanation: "資源豐富，機會多多！",
-                        fortuneDetail: "機會：拓展事業"
-                    },
-                    {
-                        text: "C. 家庭和睦",
-                        score: 20,
-                        fortune: "機會",
-                        explanation: "溫暖支持，幸福美滿！",
-                        fortuneDetail: "機會：家庭和諧"
-                    },
-                    {
-                        text: "D. 獨來獨往",
-                        score: 12,
-                        fortune: "命運",
-                        explanation: "自由自在，不受拘束！",
-                        fortuneDetail: "命運：可能孤單"
-                    }
-                ]
-            },
-            {
-                question: "你最想達成的目標是？",
-                options: [
-                    {
-                        text: "A. 事業成功",
-                        score: 30,
-                        fortune: "機會",
-                        explanation: "努力奮鬥，成就非凡！",
-                        fortuneDetail: "機會：獲得升遷"
-                    },
-                    {
-                        text: "B. 家庭幸福",
-                        score: 25,
-                        fortune: "機會",
-                        explanation: "愛與被愛，溫暖人生！",
-                        fortuneDetail: "機會：建立美滿家庭"
-                    },
-                    {
-                        text: "C. 健康長壽",
-                        score: 20,
-                        fortune: "機會",
-                        explanation: "身心健康，享受人生！",
-                        fortuneDetail: "機會：保持活力"
-                    },
-                    {
-                        text: "D. 內心平靜",
-                        score: 18,
-                        fortune: "命運",
-                        explanation: "心靈富足，知足常樂！",
-                        fortuneDetail: "命運：需要修練"
-                    }
-                ]
-            },
-            {
-                question: "你最喜歡的學習環境是？",
-                options: [
-                    {
-                        text: "A. 安靜圖書館",
-                        score: 20,
-                        fortune: "機會",
-                        explanation: "專注學習，效率提升！",
-                        fortuneDetail: "機會：深度思考"
-                    },
-                    {
-                        text: "B. 咖啡廳",
-                        score: 18,
-                        fortune: "命運",
-                        explanation: "輕鬆氛圍，靈感湧現！",
-                        fortuneDetail: "命運：容易分心"
-                    },
-                    {
-                        text: "C. 戶外公園",
-                        score: 22,
-                        fortune: "機會",
-                        explanation: "自然環境，心情愉悅！",
-                        fortuneDetail: "機會：獲得靈感"
-                    },
-                    {
-                        text: "D. 自己房間",
-                        score: 15,
-                        fortune: "命運",
-                        explanation: "舒適熟悉，放鬆學習！",
-                        fortuneDetail: "命運：可能太舒適"
-                    }
-                ]
-            },
-            {
-                question: "你最想要的生活態度是？",
-                options: [
-                    {
-                        text: "A. 積極樂觀",
-                        score: 28,
-                        fortune: "機會",
-                        explanation: "正面思考，吸引好運！",
-                        fortuneDetail: "機會：感染他人"
-                    },
-                    {
-                        text: "B. 謹慎小心",
-                        score: 15,
-                        fortune: "命運",
-                        explanation: "深思熟慮，避免風險！",
-                        fortuneDetail: "命運：可能錯過機會"
-                    },
-                    {
-                        text: "C. 勇敢冒險",
-                        score: 25,
-                        fortune: "機會",
-                        explanation: "勇於嘗試，突破自我！",
-                        fortuneDetail: "機會：發現新可能"
-                    },
-                    {
-                        text: "D. 隨遇而安",
-                        score: 18,
-                        fortune: "命運",
-                        explanation: "順其自然，心境平和！",
-                        fortuneDetail: "命運：缺乏主動性"
-                    }
-                ]
+                "text": "D. 聯絡學生會，請他們以正式組織的身份與總務處開會協調。",
+                "score": 7,
+                "fortune": "機會",
+                "fortuneScore": 3,
+                "explanation": "學生會出面協調，總務處給出明確的修復時程，問題在四天後解決。",
+                "fortuneDetail": "你們的議題被納入學生會的成果報告中，增加了學生會的聲望，也讓你與學生會建立了良好關係。"
             }
-        ];
+        ]
+    },
+    {
+        "question": "必修課的詭異評分",
+        "description": "系上一門必修課的期末報告，某位教授的評分標準非常主觀，許多同學的成績都遠低於預期，但教授拒絕提供詳細的評分依據。",
+        "options": [
+            {
+                "text": "A. 私下寫信給教授，禮貌地詢問自己報告的具體問題在哪。",
+                "score": -4,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "教授覺得自己的專業受到質疑，已讀不回你的信件。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "B. 聯合班上超過一半的同學，一起向系主任申訴。",
+                "score": 10,
+                "fortune": "機會",
+                "fortuneScore": -2,
+                "explanation": "由於是集體反應，系主任非常重視，並出面與教授協調，最終教授同意重新審視評分標準。",
+                "fortuneDetail": "該教授未來對你們這屆的學生態度變得非常冷淡。"
+            },
+            {
+                "text": "C. 算了，反正不是只有自己低分，不想得罪教授。",
+                "score": -5,
+                "fortune": "命運",
+                "fortuneScore": -1,
+                "explanation": "你的沉默讓教授覺得這種評分方式沒問題，下學期依然如此。",
+                "fortuneDetail": "你們的學弟妹也將面臨同樣的困境。"
+            },
+            {
+                "text": "D. 在課程教學評鑑中，給予該教授最低分，並寫下詳細的負評。",
+                "score": 3,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "你的評鑑內容會成為系務會議的參考。",
+                "fortuneDetail": "教學評鑑是匿名的，且結果通常在下學期才會對該教授產生影響，對你這次的成績沒有幫助。"
+            }
+        ]
+    },
+    {
+        "question": "校園食品漲價",
+        "description": "學生餐廳的廠商聯合漲價，一份雞腿便當從90元漲到120元，品質卻沒有提升。",
+        "options": [
+            {
+                "text": "A. 發起「抵制學餐，自帶午餐」活動，並在社群上宣傳。",
+                "score": 6,
+                "fortune": "命運",
+                "fortuneScore": -3,
+                "explanation": "活動初期有很多人響應，廠商的確有感受到壓力。",
+                "fortuneDetail": "活動難以持久，一星期後大家又回到學餐，廠商並未調降價格。"
+            },
+            {
+                "text": "B. 向學校的膳食委員會提出書面抗議。",
+                "score": 4,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "膳食委員會有將你的意見納入紀錄，並承諾在下次與廠商續約時會將價格納入考量。",
+                "fortuneDetail": "遠水救不了近火，本學期的價格確定不會改變。"
+            },
+            {
+                "text": "C. 找水果日報或電視台記者，投訴「大學學餐比外面還貴」。",
+                "score": 15,
+                "fortune": "命運",
+                "fortuneScore": -5,
+                "explanation": "媒體報導後，學校形象受損，立刻介入要求廠商降價或提出改善方案，價格調降為105元。",
+                "fortuneDetail": "學校高層對學生這種「訴諸媒體」的行為感到不滿，未來對學生事務的溝通管道審核會更嚴格。"
+            },
+            {
+                "text": "D. 覺得多花點錢總比餓肚子好，默默接受。",
+                "score": -4,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "廠商發現學生沒有抵抗，於是食髓知味，下學期連飲料都漲價了。",
+                "fortuneDetail": "無副作用。"
+            }
+        ]
+    },
+    {
+        "question": "通識課分組的雷隊友",
+        "description": "一堂佔分很重的通識課，你被分到一個「雷包」小組，有兩位組員完全不參與討論也不交作業，眼看報告期限就要到了。",
+        "options": [
+            {
+                "text": "A. 直接跟授課老師反應，並附上你們催促組員的對話紀錄。",
+                "score": 8,
+                "fortune": "命運",
+                "fortuneScore": -3,
+                "explanation": "老師理解情況，同意你們的報告可以排除那兩位組員，並給予補救機會。",
+                "fortuneDetail": "你被那兩位組員在系上傳閒話，說你是個愛打小報告的人。"
+            },
+            {
+                "text": "B. 小組內部決議，直接在報告上刪除那兩位組員的名字。",
+                "score": 3,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "你們成功提交了報告，但老師發現後，認為你們沒有事先溝通，處理方式不成熟，小組整體分數被扣了一點。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "C. 幫他們做完，心想大學本來就會遇到這種事，只求順利過關。",
+                "score": -6,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "你花費了大量心力，身心俱疲，而那兩位組員坐享其成拿到了跟你差不多的分數。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "D. 當面和那兩位組員攤牌，嚴肅告知再不參與就要被除名。",
+                "score": 5,
+                "fortune": "機會",
+                "fortuneScore": -1,
+                "explanation": "攤牌後，其中一位組員意識到問題的嚴重性，開始參與進來。另一位則依然故我。",
+                "fortuneDetail": "過程中發生了爭吵，小組氣氛變得很尷尬。"
+            }
+        ]
+    },
+    {
+        "question": "社團經費不公",
+        "description": "你是某個冷門社團的幹部，發現學校課外活動組在分配社團經費時，明顯偏袒某些大型或熱門社團，你們社團的補助申請被大幅削減。",
+        "options": [
+            {
+                "text": "A. 摸摸鼻子，想辦法在校外拉贊助或增加社費。",
+                "score": -3,
+                "fortune": "機會",
+                "fortuneScore": 2,
+                "explanation": "社團營運變得困難，可能導致無法舉辦預定的活動。",
+                "fortuneDetail": "培養了獨立募款的能力。"
+            },
+            {
+                "text": "B. 在社團聯席會議上，公開質疑經費分配的標準與流程。",
+                "score": 5,
+                "fortune": "命運",
+                "fortuneScore": -2,
+                "explanation": "你的發言引起了討論，但當下被課外組以「行政裁量權」為由帶過。",
+                "fortuneDetail": "你和你的社團被課外組標記為「高意見群體」，未來審核你們的活動申請會更仔細。"
+            },
+            {
+                "text": "C. 聯合其他同樣被削減經費的小型社團，一起向課外組遞交連署陳情書。",
+                "score": 12,
+                "fortune": "機會",
+                "fortuneScore": -1,
+                "explanation": "集體的力量讓課外組無法忽視，他們被迫重新檢討並公開經費分配的更詳細規則。",
+                "fortuneDetail": "你們花了很多時間進行跨社團的溝通與協調。"
+            },
+            {
+                "text": "D. 在自己的社團IG上發抱怨文，標註學校官方帳號。",
+                "score": 1,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "你的抱怨文得到了一些同情，但很快就被其他貼文洗掉，沒有造成任何實質影響。",
+                "fortuneDetail": "無副作用。"
+            }
+        ]
+    },
+    {
+        "question": "圖書館座位被佔",
+        "description": "期中考週，圖書館一位難求。你發現很多人用書本或筆電佔位，人卻長時間不在。",
+        "options": [
+            {
+                "text": "A. 找館方人員反應這個問題。",
+                "score": 4,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "館方人員表示會加強巡邏，但人力有限，效果不彰。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "B. 在臉書「靠北XX大學」粉絲頁匿名發文抱怨。",
+                "score": 2,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "貼文引發了「佔位是否道德」的激烈論戰，但對於解決問題沒有幫助。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "C. 如果位置空超過一小時，就直接把他的東西移到旁邊，自己坐下。",
+                "score": 6,
+                "fortune": "機會",
+                "fortuneScore": -4,
+                "explanation": "你成功找到了位子念書。",
+                "fortuneDetail": "原本佔位的人回來後，與你發生了激烈的口角衝突，還驚動了館方人員。"
+            },
+            {
+                "text": "D. 放棄，轉而去校外的咖啡廳讀書。",
+                "score": -2,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "你花了不少錢在咖啡廳，而且環境不一定比圖書館安靜。",
+                "fortuneDetail": "無副作用。"
+            }
+        ]
+    },
+    {
+        "question": "校內工讀的勞動權益",
+        "description": "你在學校某單位擔任工讀生，被要求做很多超出職責範圍的工作，而且時常需要「義務」加班，但單位主管說「學校的工讀本來就是這樣」。",
+        "options": [
+            {
+                "text": "A. 為了履歷和單位主管的關係，忍氣吞聲繼續做。",
+                "score": -5,
+                "fortune": "機會",
+                "fortuneScore": 1,
+                "explanation": "你的工作量越來越大，主管也把你當成免費勞力。",
+                "fortuneDetail": "你在學期末獲得了主管的「優良工讀生」口頭嘉獎。"
+            },
+            {
+                "text": "B. 蒐集加班證據，向學校的勞權相關單位或學生會申訴。",
+                "score": 10,
+                "fortune": "命運",
+                "fortuneScore": -3,
+                "explanation": "學校勞權單位介入調查，要求該單位必須依法支付加班費或給予補休，改善了制度。",
+                "fortuneDetail": "你和該單位主管的關係徹底破裂。"
+            },
+            {
+                "text": "C. 直接跟主管攤牌，表示不願意再無償加班。",
+                "score": -3,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "主管對你的態度變得極差，雖然不敢再叫你加班，但處處刁難你。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "D. 馬上辭職，並在交接時跟下一位工讀生暗示這裡的狀況。",
+                "score": 2,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "你脫離了苦海。",
+                "fortuneDetail": "你提醒了下一位工讀生，他對你心存感激，但該單位的問題並未解決。"
+            }
+        ]
+    },
+    {
+        "question": "校園演唱會的爛攤子",
+        "description": "學生會花了鉅款辦校園演唱會，結果流程混亂、音響極差，結束後現場還留下一堆垃圾。你在網路上批評，卻被學生會成員私訊要求刪文。",
+        "options": [
+            {
+                "text": "A. 將私訊內容截圖，再次公開發文，指控學生會打壓言論。",
+                "score": 8,
+                "fortune": "命運",
+                "fortuneScore": -4,
+                "explanation": "事件鬧大，學生會被迫公開道歉，並承諾未來會更公開透明。",
+                "fortuneDetail": "你被貼上「戰神」標籤，一些人覺得你得理不饒人。"
+            },
+            {
+                "text": "B. 覺得學生會辦活動也很辛苦，默默刪文。",
+                "score": -5,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "學生會認為這種處理方式有效，未來可能繼續用來壓制負面意見。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "C. 不刪文也不回應，讓事情自然淡化。",
+                "score": 2,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "你堅持了你的言論自由，但事情沒有獲得進一步的關注。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "D. 寫一封理性的建議信給學生會，詳述活動可改進之處。",
+                "score": 6,
+                "fortune": "機會",
+                "fortuneScore": 3,
+                "explanation": "你的建議被學生會採納，並在期末報告中感謝你的回饋。",
+                "fortuneDetail": "你與學生會建立了溝通的橋樑，未來可能被邀請參與活動的籌備。"
+            }
+        ]
+    },
+    {
+        "question": "性別不友善的言論",
+        "description": "在一堂課的師生群組裡，某位同學發表了針對特定性別的歧視性言論，引起一些人不滿，但老師沒有任何表示。",
+        "options": [
+            {
+                "text": "A. 在群組裡直接反駁他，引發一場線上論戰。",
+                "score": 3,
+                "fortune": "命運",
+                "fortuneScore": -2,
+                "explanation": "你表達了你的立場，但也讓群組氣氛烏煙瘴氣。",
+                "fortuneDetail": "你和那位同學的關係變得非常緊張。"
+            },
+            {
+                "text": "B. 私訊老師，提醒他群組裡有不當言論，看他如何處理。",
+                "score": 7,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "老師收到你的提醒後，在群組裡公告提醒大家注意言論分寸，並私下警告了那位同學。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "C. 截圖並向學校的性別平等委員會檢舉。",
+                "score": 10,
+                "fortune": "機會",
+                "fortuneScore": -2,
+                "explanation": "性平會啟動調查，並安排了全校性的性別平等教育講座，產生了長遠的正面影響。",
+                "fortuneDetail": "流程耗時很長，且你可能需要以證人身份出席會議。"
+            },
+            {
+                "text": "D. 覺得這只是個人言論，不想惹事，選擇無視。",
+                "score": -6,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "你的沉默被視為默許，那位同學未來可能變本加厲，對校園的友善氛圍造成傷害。",
+                "fortuneDetail": "無副作用。"
+            }
+        ]
+    },
+    {
+        "question": "校門口的交通亂象",
+        "description": "學校門口的人行道長期被違停機車佔用，行人被迫走到馬路上，非常危險。你向校警隊反應多次，都沒有效果。",
+        "options": [
+            {
+                "text": "A. 直接打110報警，讓警察來開單處理。",
+                "score": 7,
+                "fortune": "機會",
+                "fortuneScore": -3,
+                "explanation": "警察來開了幾張罰單，違停情況暫時改善了一兩天。",
+                "fortuneDetail": "警察離開後，違停故態復萌，且你被一些被開單的同學在網路上罵「正義魔人」。"
+            },
+            {
+                "text": "B. 拍攝違停亂象的照片，投稿給地方新聞媒體。",
+                "score": 12,
+                "fortune": "命運",
+                "fortuneScore": -2,
+                "explanation": "媒體報導引發社會關注，交通局與學校共同規劃了新的機車停車格，並加強取締。",
+                "fortuneDetail": "學校因為負面新聞而被上級單位關切。"
+            },
+            {
+                "text": "C. 自己製作「請勿違停」的標語牌，放在人行道上。",
+                "score": 2,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "你的標語牌隔天就不見了，可能被當成垃圾清掉了。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "D. 繞路走，雖然比較遠，但比較安全。",
+                "score": -2,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "你個人的問題解決了，但整體的交通危險依然存在。",
+                "fortuneDetail": "無副作用。"
+            }
+        ]
+    },
+    {
+        "question": "獎學金申請的黑箱作業",
+        "description": "你申請一項系上獎學金，明明你的條件完全符合，最終獲獎的卻是一位條件不如你、但跟系辦助教關係很好的同學。你懷疑有黑箱作業。",
+        "options": [
+            {
+                "text": "A. 直接找系主任，提出你的質疑並要求公開評選標準。",
+                "score": 7,
+                "fortune": "命運",
+                "fortuneScore": -3,
+                "explanation": "系主任為了避嫌，答應會檢討評選流程，但這次的結果無法改變。",
+                "fortuneDetail": "你被系辦助教視為眼中釘。"
+            },
+            {
+                "text": "B. 在系上同學的群組裡抱怨，宣稱評選不公。",
+                "score": 1,
+                "fortune": "機會",
+                "fortuneScore": -2,
+                "explanation": "你在群組裡獲得了一些同情，但很快大家就開始討論別的話題。",
+                "fortuneDetail": "你可能會被認為是「吃不到葡萄說葡萄酸」。"
+            },
+            {
+                "text": "C. 算了，反正錢也不多，不想把人際關係搞砸。",
+                "score": -7,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "你的權益受損了，但你選擇了沉默，這可能會讓不公的制度延續下去。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "D. 向學校的獎助學金委員會提出正式申訴，並附上你的證明文件。",
+                "score": 12,
+                "fortune": "機會",
+                "fortuneScore": -2,
+                "explanation": "委員會重啟調查，發現程序瑕疵，雖然無法撤銷已公告的結果，但給了你額外的補償，並要求該系未來必須公開透明。",
+                "fortuneDetail": "你需要花費大量時間準備書面資料和出席說明會。"
+            }
+        ]
+    },
+    {
+        "question": "宿舍門禁時間",
+        "description": "學校為了安全，規定宿舍晚上12點門禁。但你因為打工或做實驗，時常需要晚歸，門禁造成你極大的不便。",
+        "options": [
+            {
+                "text": "A. 發起連署，要求學校廢除門禁或改為更彈性的刷卡制。",
+                "score": 10,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "連署獲得廣大迴響，學校召開公聽會，最終同意將門禁改為電子刷卡，兼顧了安全與彈性。",
+                "fortuneDetail": "整個過程耗時一學期，期間你還是要忍受門禁之苦。"
+            },
+            {
+                "text": "B. 每次晚歸都打電話叫宿舍管理員起床開門，讓他感受到不便。",
+                "score": -3,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "宿舍管理員對你極度不滿，並向宿舍輔導員投訴你，你被約談。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "C. 偷偷學會爬牆或鑽漏洞進出宿舍。",
+                "score": 2,
+                "fortune": "機會",
+                "fortuneScore": -10,
+                "explanation": "你暫時解決了個人問題。",
+                "fortuneDetail": "一旦被抓到，你將面臨被記過退宿的風險。"
+            },
+            {
+                "text": "D. 為了遵守規定，辭掉晚班的打工。",
+                "score": -5,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "你損失了經濟來源，而且學校不合理的制度依然存在。",
+                "fortuneDetail": "無副作用。"
+            }
+        ]
+    },
+    {
+        "question": "體育課的器材損壞",
+        "description": "體育課要用的籃球或排球，很多都已破損不堪，向體育室反應，卻總是被以「經費不足」為由推託。",
+        "options": [
+            {
+                "text": "A. 每次上課前都去體育室借，借不到就在意見簿上寫。",
+                "score": 2,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "你的意見被記錄下來，但沒有立即的改變。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "B. 聯合修同堂課的同學，一起湊錢買新的球來用。",
+                "score": 3,
+                "fortune": "命運",
+                "fortuneScore": -2,
+                "explanation": "你們解決了自己上課的問題。",
+                "fortuneDetail": "這筆開銷本應由學校負擔，你們卻自己買單了。"
+            },
+            {
+                "text": "C. 在校務會議的學生代表發言時間，公開提出這個問題。",
+                "score": 13,
+                "fortune": "機會",
+                "fortuneScore": -1,
+                "explanation": "在正式會議上提出，引起校長和總務長的注意。體育室被要求提出緊急採購計畫，一星期內就補齊了器材。",
+                "fortuneDetail": "體育室的主任覺得你讓他沒面子。"
+            },
+            {
+                "text": "D. 上課就跟同學聊天滑手機，反正沒有器材也不能做什麼。",
+                "score": -4,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "你浪費了修這門課的時間與學分費。",
+                "fortuneDetail": "無副作用。"
+            }
+        ]
+    },
+    {
+        "question": "校園內的二手書詐騙",
+        "description": "在學校的二手書交流社團，你向一位學長買書，先匯款後對方卻人間蒸發，封鎖你。你發現不只你一個人受騙。",
+        "options": [
+            {
+                "text": "A. 到警察局報案，走法律程序。",
+                "score": 8,
+                "fortune": "命運",
+                "fortuneScore": -2,
+                "explanation": "你採取了最正確的法律途徑。",
+                "fortuneDetail": "警察表示這種小額詐騙案，程序繁瑣且不一定能追回款項。"
+            },
+            {
+                "text": "B. 在社團公布對方的姓名、系級與對話紀錄，提醒大家不要再受騙。",
+                "score": 7,
+                "fortune": "機會",
+                "fortuneScore": -5,
+                "explanation": "成功阻止了更多人受騙。",
+                "fortuneDetail": "對方反過來告你「違反個資法」，雖然不一定會成立，但讓你捲入了法律糾紛。"
+            },
+            {
+                "text": "C. 自認倒楣，當作花錢買教訓。",
+                "score": -8,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "你的錢拿不回來，而且騙子可能繼續在校園中行騙。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "D. 透過對方在社團的發文紀錄，找到他的直屬學長姐或好友，請他們幫忙聯繫。",
+                "score": 10,
+                "fortune": "機會",
+                "fortuneScore": -1,
+                "explanation": "透過同儕壓力，那位學長自知理虧，把錢退還給你，並在社團道歉。",
+                "fortuneDetail": "你花了很多心力去「肉搜」和溝通，感到心力交瘁。"
+            }
+        ]
+    },
+    {
+        "question": "校方強制安裝監控軟體",
+        "description": "學校以「方便課程管理」為由，要求學生必須在個人電腦上安裝一套監控軟體，據說該軟體有讀取你電腦資料的權限。",
+        "options": [
+            {
+                "text": "A. 拒絕安裝，並向學校資訊處提出侵犯隱私權的疑慮。",
+                "score": 5,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "資訊處給你制式回答，表示軟體符合規定，但你的反對意見已被記錄。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "B. 找一台沒在用的舊電腦安裝，應付學校的要求。",
+                "score": 1,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "你保護了你的主要電腦，但沒有解決問題的根本。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "C. 聯合資工系的同學，研究該軟體的程式碼，找出侵犯隱私的證據。",
+                "score": 15,
+                "fortune": "機會",
+                "fortuneScore": -4,
+                "explanation": "你們的研究報告在網路上公開，證明該軟體確實有資安風險。輿論壓力迫使學校宣佈停止使用該軟體。",
+                "fortuneDetail": "你們的行為被學校高層視為「駭客行為」，並受到校方高度關注。"
+            },
+            {
+                "text": "D. 雖然覺得怪怪的，但為了上課方便還是安裝了。",
+                "score": -7,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "你的個人資料暴露在未知的風險中。",
+                "fortuneDetail": "無副作用。"
+            }
+        ]
+    },
+    {
+        "question": "校慶活動強迫攤派",
+        "description": "系學會為了校慶園遊會，強迫每個大一新生都要繳交500元的攤位費，並且每人要輪值4小時，否則會影響「系上活動參與分數」。",
+        "options": [
+            {
+                "text": "A. 拒絕繳費與排班，並向系主任說明情況。",
+                "score": 8,
+                "fortune": "命運",
+                "fortuneScore": -4,
+                "explanation": "系主任介入後，系學會將「強迫」改為「鼓勵」，並取消了所謂的「參與分數」。",
+                "fortuneDetail": "你被系學會的幹部們排擠。"
+            },
+            {
+                "text": "B. 雖然不滿，但為了跟同學和學長姐打好關係，還是照做了。",
+                "score": -5,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "你犧牲了自己的時間與金錢，助長了這種不合理的「潛規則」。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "C. 在新生群組裡發起討論，看看有多少人跟你一樣不滿，再決定下一步。",
+                "score": 10,
+                "fortune": "機會",
+                "fortuneScore": -2,
+                "explanation": "你發現超過八成的新生都不滿，你們集體向系學會反應，迫使他們改變了政策。",
+                "fortuneDetail": "籌備過程中的激烈溝通，讓新生與系學會之間產生了一些不信任感。"
+            },
+            {
+                "text": "D. 只繳錢但不去排班，當天直接請假。",
+                "score": -3,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "你損失了錢，而且你的排班空缺需要其他同學來補，造成了他們的不滿。",
+                "fortuneDetail": "無副作用。"
+            }
+        ]
+    },
+    {
+        "question": "無障礙設施的缺乏",
+        "description": "你的一位同學因為腿部受傷，需要坐輪椅上學。你們發現某棟必修課集中的教學大樓，居然沒有電梯或無障礙坡道，導致他上課極為困難。",
+        "options": [
+            {
+                "text": "A. 每天都由幾位同學輪流幫忙把輪椅抬上樓。",
+                "score": 4,
+                "fortune": "機會",
+                "fortuneScore": -2,
+                "explanation": "你們的友情令人感動，暫時解決了問題。",
+                "fortuneDetail": "這不是長久之計，而且對你們的體力是很大的負擔，也可能造成危險。"
+            },
+            {
+                "text": "B. 寫信給總務處，說明情況的急迫性，並詢問改善計畫。",
+                "score": 5,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "總務處回信表示，增設電梯需要龐大預算且涉及建物結構，已列入長期規劃，短期無法解決。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "C. 尋求校內資源教室或學務處的協助，看是否有特殊協調方案。",
+                "score": 10,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "學務處啟動了協調機制，緊急將該課程的所有班級更換到一樓的教室上課，立即解決了問題。",
+                "fortuneDetail": "這個方案只適用於本學期，硬體設施問題依然存在。"
+            },
+            {
+                "text": "D. 拍攝同學辛苦上樓的影片，發布到社群媒體，引發公眾同情與關注。",
+                "score": 12,
+                "fortune": "命運",
+                "fortuneScore": -3,
+                "explanation": "影片引發廣大迴響，甚至有校友願意捐款。學校感受到壓力，承諾在一年內完成無障礙坡道的增建工程。",
+                "fortuneDetail": "校方對於這種「情感勒索」式的輿論操作感到不悅。"
+            }
+        ]
+    },
+    {
+        "question": "教授課堂上的不當言論",
+        "description": "一位資深教授在課堂上，時常會發表一些涉及政治立場、性別刻板印象的言論，並將其當作「玩笑」。",
+        "options": [
+            {
+                "text": "A. 當場舉手，針對教授的言論提出不同看法。",
+                "score": 6,
+                "fortune": "命運",
+                "fortuneScore": -4,
+                "explanation": "你勇敢地表達了自己，但教授可能當場把你噹到下不了台。",
+                "fortuneDetail": "你這門課的期末成績可能會受到「特別關照」。"
+            },
+            {
+                "text": "B. 錄下教授的爭議言論，向校內性平會或學生申訴管道檢舉。",
+                "score": 10,
+                "fortune": "機會",
+                "fortuneScore": -3,
+                "explanation": "學校受理了你的檢舉，並對該教授進行了告誡或要求其參加相關研習。",
+                "fortuneDetail": "秘密檢舉被傳開後，你可能會被一些認同教授的學生視為「抓耙子」。"
+            },
+            {
+                "text": "C. 下課後，私下找教授溝通，表達自己的不舒服。",
+                "score": 3,
+                "fortune": "命運",
+                "fortuneScore": -1,
+                "explanation": "你的溝通可能有效，也可能無效，完全取決於教授的個性。",
+                "fortuneDetail": "你冒著與教授直接衝突的風險。"
+            },
+            {
+                "text": "D. 認為這是教授的言論自由，而且他教學內容還是很紮實，選擇忽略。",
+                "score": -6,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "你的沉默讓這種不當言論在課堂上持續發生，影響了教學環境。",
+                "fortuneDetail": "無副作用。"
+            }
+        ]
+    },
+    {
+        "question": "腳踏車停放區被工程佔用",
+        "description": "學校為了興建新的大樓，無預警地將一大片腳踏車停放區用圍籬圍起來，導致上百台腳踏車無處可停，亂成一團。",
+        "options": [
+            {
+                "text": "A. 向總務處的營繕組抗議，要求提供替代的停車空間。",
+                "score": 5,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "營繕組表示會盡快規劃，但需要時間，請同學暫時克服。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "B. 帶頭把腳踏車全部移到行政大樓門口，進行「無聲的抗議」。",
+                "score": 10,
+                "fortune": "命運",
+                "fortuneScore": -6,
+                "explanation": "此舉成功吸引了全校的目光和媒體的注意，學校當天下午就緊急清出了一塊空地作為臨時停放區。",
+                "fortuneDetail": "你的「帶頭」行為被記了小過一支。"
+            },
+            {
+                "text": "C. 算了，隨便找個地方停，被拖吊就算了。",
+                "score": -4,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "你的腳踏車真的被拖吊了，你還需要付罰款才能領回。",
+                "fortuneDetail": "無副作用。"
+            },
+            {
+                "text": "D. 聯絡學生議會或學生代表，請他們在校務會議上正式提出此問題。",
+                "score": 8,
+                "fortune": "機會",
+                "fortuneScore": 0,
+                "explanation": "透過正式的議事管道，總務處被要求必須在兩週內提出完整的臨時停車規劃與長期方案，問題獲得制度性解決。",
+                "fortuneDetail": "程序的進行需要時間，短期內亂象依舊。"
+            }
+        ]
+    },
+    {
+        "question": "畢業門檻的突然變更",
+        "description": "你是大二學生，系上突然公告新的畢業門檻，要求從你們這屆開始，必須要新增一項校外實習時數才能畢業。許多同學的讀書計畫因此大亂。",
+        "options": [
+            {
+                "text": "A. 激烈反對，主張「不溯及既往」原則，要求此規定只能適用於新生。",
+                "score": 6,
+                "fortune": "命運",
+                "fortuneScore": -2,
+                "explanation": "你的主張有法理依據，在系務會議上引發了激辯。",
+                "fortuneDetail": "單一的聲音力量有限，最終可能無法改變結果。"
+            },
+            {
+                "text": "B. 接受，並開始尋找實習機會，認為這對未來就業有幫助。",
+                "score": -3,
+                "fortune": "機會",
+                "fortuneScore": 4,
+                "explanation": "你順應了改變，但放棄了爭取自身權益的機會。",
+                "fortuneDetail": "你因為提早準備，找到了很不錯的實習，對履歷加分。"
+            },
+            {
+                "text": "C. 聯合全系各年級的學生，向系辦、院辦、教務處層層遞交陳情書。",
+                "score": 15,
+                "fortune": "機會",
+                "fortuneScore": -3,
+                "explanation": "來自學生的巨大壓力，讓學校教務處介入協調。最終系上決議，將此規定改為「選修」或提供其他替代方案，成功捍衛了學生的權益。",
+                "fortuneDetail": "你成為這次陳抗的核心人物，花費了大量課餘時間。"
+            },
+            {
+                "text": "D. 在網路上發起負面評論，指責系上決策草率，不顧學生權益。",
+                "score": 4,
+                "fortune": "命運",
+                "fortuneScore": 0,
+                "explanation": "網路上的批評讓系上形象受損，但他們也因此更不願意與學生溝通，認為學生「不理性」。",
+                "fortuneDetail": "無副作用。"
+            }
+        ]
+    }
+];
 
         let currentQuestion = 0;
         let completedQuestions = JSON.parse(localStorage.getItem('completedQuestions')) || [];
@@ -1050,6 +1184,7 @@
             
             document.getElementById('currentQuestionNumber').textContent = questionIndex + 1;
             document.getElementById('questionText').textContent = q.question;
+            document.getElementById('questionDescription').textContent = q.description;
             
             // 生成選項卡片
             const optionsContainer = document.getElementById('optionsContainer');
@@ -1066,8 +1201,8 @@
                         <div class="option-card-back bg-green-100">
                             <div class="text-lg font-bold text-green-800 mb-2">${option.text}</div>
                             <div class="text-sm text-gray-700 mb-2">${option.explanation}</div>
-                            <div class="text-lg font-bold text-purple-600">
-                                ${option.fortune === '機會' ? '好運+10' : '挑戰-5'}
+                            <div class="text-lg font-bold text-blue-600">
+                                選項分數：${option.score}
                             </div>
                         </div>
                     </div>
@@ -1110,7 +1245,7 @@
                             <div class="text-sm font-bold text-gray-800 mb-2">${option.text}</div>
                             <div class="text-xs text-gray-600 mb-2">${option.fortuneDetail}</div>
                             <div class="text-lg font-bold text-purple-600">
-                                ${option.fortune === '機會' ? '好運+10' : '挑戰-5'}
+                                命運分數：${option.fortuneScore > 0 ? '+' : ''}${option.fortuneScore}
                             </div>
                         </div>
                     </div>
@@ -1163,5 +1298,5 @@
         window.onload = initializePage;
     </script>
     </div>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'977f44ade5eaa355',t:'MTc1NjY3MjA0My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'977f683ea79d4a82',t:'MTc1NjY3MzUwMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
