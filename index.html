@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>百萬小學堂</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .option-card {
+            background-color: transparent;
+            perspective: 1000px;
+            height: 200px;
+        }
+        .option-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        .option-card.flipped .option-card-inner {
+            transform: rotateY(180deg);
+        }
+        .option-card-front, .option-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .option-card-back {
+            transform: rotateY(180deg);
+        }
+        .fortune-card {
+            background-color: transparent;
+            perspective: 1000px;
+            height: 180px;
+        }
+        .fortune-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        .fortune-card.flipped .fortune-card-inner {
+            transform: rotateY(180deg);
+        }
+        .fortune-card-front, .fortune-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .fortune-card-back {
+            transform: rotateY(180deg);
+        }
+        .number-ball {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .number-ball:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+        .completed {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        .incomplete {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-hidden">
+    <!-- 動態校園背景 -->
+    <div class="fixed inset-0 z-0">
+        <!-- 天空漸層 -->
+        <div class="absolute inset-0 bg-gradient-to-b from-blue-300 via-blue-400 to-blue-500"></div>
+        
+        <!-- 太陽 -->
+        <div class="absolute top-8 right-16 w-12 h-12 bg-yellow-400 rounded-full shadow-lg animate-pulse" style="animation-duration: 4s;"></div>
+        <div class="absolute top-10 right-18 w-8 h-8 bg-yellow-300 rounded-full opacity-50"></div>
+        
+        <!-- 雲朵群 -->
+        <div class="absolute top-10 left-20 w-16 h-8 bg-white rounded-full opacity-80 animate-pulse"></div>
+        <div class="absolute top-16 left-40 w-12 h-6 bg-white rounded-full opacity-70 animate-pulse" style="animation-delay: 1s;"></div>
+        <div class="absolute top-8 right-32 w-20 h-10 bg-white rounded-full opacity-75 animate-pulse" style="animation-delay: 2s;"></div>
+        <div class="absolute top-20 left-60 w-14 h-7 bg-white rounded-full opacity-60 animate-pulse" style="animation-delay: 3s;"></div>
+        <div class="absolute top-12 right-60 w-18 h-9 bg-white rounded-full opacity-70 animate-pulse" style="animation-delay: 1.5s;"></div>
+        
+        <!-- 校園建築群 -->
+        <div class="absolute bottom-0 left-0 w-full h-72">
+            <!-- 主教學樓 -->
+            <div class="absolute bottom-0 left-1/4 w-48 h-44 bg-red-600 rounded-t-lg shadow-xl">
+                <!-- 窗戶 -->
+                <div class="absolute top-4 left-4 w-6 h-8 bg-yellow-300 rounded border border-gray-400"></div>
+                <div class="absolute top-4 left-12 w-6 h-8 bg-yellow-300 rounded border border-gray-400"></div>
+                <div class="absolute top-4 right-12 w-6 h-8 bg-yellow-300 rounded border border-gray-400"></div>
+                <div class="absolute top-4 right-4 w-6 h-8 bg-yellow-300 rounded border border-gray-400"></div>
+                <div class="absolute top-16 left-4 w-6 h-8 bg-yellow-300 rounded border border-gray-400"></div>
+                <div class="absolute top-16 left-12 w-6 h-8 bg-yellow-300 rounded border border-gray-400"></div>
+                <div class="absolute top-16 right-12 w-6 h-8 bg-yellow-300 rounded border border-gray-400"></div>
+                <div class="absolute top-16 right-4 w-6 h-8 bg-yellow-300 rounded border border-gray-400"></div>
+                <!-- 大門 -->
+                <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-16 bg-amber-800 rounded-t-lg"></div>
+                <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-yellow-400 rounded-full"></div>
+                <!-- 屋頂裝飾 -->
+                <div class="absolute -top-2 left-1/2 transform -translate-x-1/2 w-8 h-4 bg-gray-600 rounded"></div>
+                <!-- 校名牌 -->
+                <div class="absolute top-28 left-1/2 transform -translate-x-1/2 w-20 h-4 bg-white rounded text-xs flex items-center justify-center text-red-600 font-bold">百萬小學</div>
+            </div>
+            
+            <!-- 圖書館 -->
+            <div class="absolute bottom-0 right-1/4 w-40 h-36 bg-green-600 rounded-t-lg shadow-xl">
+                <div class="absolute top-3 left-3 w-5 h-6 bg-yellow-200 rounded border border-gray-300"></div>
+                <div class="absolute top-3 left-10 w-5 h-6 bg-yellow-200 rounded border border-gray-300"></div>
+                <div class="absolute top-3 right-10 w-5 h-6 bg-yellow-200 rounded border border-gray-300"></div>
+                <div class="absolute top-3 right-3 w-5 h-6 bg-yellow-200 rounded border border-gray-300"></div>
+                <div class="absolute top-12 left-3 w-5 h-6 bg-yellow-200 rounded border border-gray-300"></div>
+                <div class="absolute top-12 right-3 w-5 h-6 bg-yellow-200 rounded border border-gray-300"></div>
+                <div class="absolute top-21 left-1/2 transform -translate-x-1/2 w-16 h-3 bg-white rounded text-xs flex items-center justify-center text-green-700 font-bold">圖書館</div>
+            </div>
+            
+            <!-- 體育館 -->
+            <div class="absolute bottom-0 left-8 w-36 h-28 bg-blue-600 rounded-t-lg shadow-lg">
+                <div class="absolute top-4 left-4 w-4 h-5 bg-cyan-200 rounded"></div>
+                <div class="absolute top-4 right-4 w-4 h-5 bg-cyan-200 rounded"></div>
+                <div class="absolute top-12 left-1/2 transform -translate-x-1/2 w-12 h-8 bg-white rounded text-xs flex items-center justify-center text-blue-700 font-bold">體育館</div>
+            </div>
+            
+            <!-- 科學館 -->
+            <div class="absolute bottom-0 right-8 w-32 h-32 bg-purple-600 rounded-t-lg shadow-lg">
+                <div class="absolute top-3 left-2 w-4 h-5 bg-pink-200 rounded"></div>
+                <div class="absolute top-3 right-2 w-4 h-5 bg-pink-200 rounded"></div>
+                <div class="absolute top-11 left-2 w-4 h-5 bg-pink-200 rounded"></div>
+                <div class="absolute top-11 right-2 w-4 h-5 bg-pink-200 rounded"></div>
+                <div class="absolute top-19 left-1/2 transform -translate-x-1/2 w-12 h-3 bg-white rounded text-xs flex items-center justify-center text-purple-700 font-bold">科學館</div>
+            </div>
+            
+            <!-- 操場跑道 -->
+            <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-40 h-24 bg-green-400 rounded-t-full border-4 border-red-400"></div>
+            <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-20 bg-green-500 rounded-t-full"></div>
+            
+            <!-- 籃球場 -->
+            <div class="absolute bottom-0 left-1/3 w-20 h-16 bg-orange-400 rounded">
+                <div class="absolute top-2 left-1/2 transform -translate-x-1/2 w-1 h-12 bg-white"></div>
+                <div class="absolute top-1/2 left-1 right-1 h-1 bg-white"></div>
+                <div class="absolute top-1 left-1/2 transform -translate-x-1/2 w-6 h-6 border-2 border-white rounded-full bg-transparent"></div>
+                <div class="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-6 h-6 border-2 border-white rounded-full bg-transparent"></div>
+            </div>
+        </div>
+        
+        <!-- 豐富的樹木景觀 -->
+        <div class="absolute bottom-20 left-12">
+            <div class="w-4 h-16 bg-amber-700 rounded"></div>
+            <div class="absolute -top-8 -left-6 w-16 h-16 bg-green-500 rounded-full"></div>
+            <div class="absolute -top-6 -left-4 w-12 h-12 bg-green-400 rounded-full opacity-70"></div>
+        </div>
+        <div class="absolute bottom-20 right-16">
+            <div class="w-4 h-16 bg-amber-700 rounded"></div>
+            <div class="absolute -top-8 -left-6 w-16 h-16 bg-green-500 rounded-full"></div>
+            <div class="absolute -top-6 -left-4 w-12 h-12 bg-green-400 rounded-full opacity-70"></div>
+        </div>
+        <div class="absolute bottom-24 left-1/2">
+            <div class="w-3 h-12 bg-amber-600 rounded"></div>
+            <div class="absolute -top-6 -left-4 w-12 h-12 bg-green-600 rounded-full"></div>
+        </div>
+        <div class="absolute bottom-28 right-1/3">
+            <div class="w-5 h-20 bg-amber-800 rounded"></div>
+            <div class="absolute -top-10 -left-8 w-20 h-20 bg-green-400 rounded-full"></div>
+            <div class="absolute -top-8 -left-6 w-16 h-16 bg-green-500 rounded-full opacity-80"></div>
+        </div>
+        
+        <!-- 花壇 -->
+        <div class="absolute bottom-16 left-1/4 w-12 h-4 bg-amber-600 rounded-full">
+            <div class="absolute -top-1 left-2 w-2 h-2 bg-red-400 rounded-full"></div>
+            <div class="absolute -top-1 left-5 w-2 h-2 bg-pink-400 rounded-full"></div>
+            <div class="absolute -top-1 left-8 w-2 h-2 bg-yellow-400 rounded-full"></div>
+        </div>
+        <div class="absolute bottom-16 right-1/4 w-12 h-4 bg-amber-600 rounded-full">
+            <div class="absolute -top-1 left-2 w-2 h-2 bg-purple-400 rounded-full"></div>
+            <div class="absolute -top-1 left-5 w-2 h-2 bg-blue-400 rounded-full"></div>
+            <div class="absolute -top-1 left-8 w-2 h-2 bg-orange-400 rounded-full"></div>
+        </div>
+        
+        <!-- 活動的學生們 -->
+        <!-- 跑步的學生 -->
+        <div class="absolute bottom-24 animate-bounce" style="left: 10%; animation-duration: 2s;">
+            <div class="w-6 h-6 bg-pink-400 rounded-full"></div>
+            <div class="w-4 h-8 bg-blue-500 rounded mt-1"></div>
+            <div class="w-2 h-4 bg-yellow-600 rounded mt-1"></div>
+            <div class="absolute -top-2 -right-1 text-xs">💨</div>
+        </div>
+        
+        <!-- 踢球的學生 -->
+        <div class="absolute bottom-24 animate-pulse" style="right: 15%; animation-duration: 1.5s;">
+            <div class="w-6 h-6 bg-yellow-400 rounded-full"></div>
+            <div class="w-4 h-8 bg-red-500 rounded mt-1"></div>
+            <div class="w-2 h-4 bg-black rounded mt-1"></div>
+            <div class="absolute -right-4 top-4 w-3 h-3 bg-white rounded-full border-2 border-black animate-spin"></div>
+        </div>
+        
+        <!-- 看書的學生 -->
+        <div class="absolute bottom-32 animate-pulse" style="left: 60%; animation-duration: 3s;">
+            <div class="w-6 h-6 bg-purple-400 rounded-full"></div>
+            <div class="w-4 h-8 bg-green-500 rounded mt-1"></div>
+            <div class="absolute -left-2 top-2 w-4 h-3 bg-orange-300 rounded"></div>
+            <div class="absolute -top-3 left-1 text-xs">📚</div>
+        </div>
+        
+        <!-- 聊天的學生群 -->
+        <div class="absolute bottom-28 animate-bounce" style="right: 40%; animation-duration: 2.5s;">
+            <div class="flex space-x-2">
+                <div>
+                    <div class="w-5 h-5 bg-blue-400 rounded-full"></div>
+                    <div class="w-3 h-6 bg-yellow-500 rounded mt-1"></div>
+                </div>
+                <div>
+                    <div class="w-5 h-5 bg-red-400 rounded-full"></div>
+                    <div class="w-3 h-6 bg-purple-500 rounded mt-1"></div>
+                </div>
+            </div>
+            <div class="absolute -top-4 left-1 text-xs">💬</div>
+        </div>
+        
+        <!-- 騎腳踏車的學生 -->
+        <div class="absolute bottom-24 animate-bounce" style="left: 35%; animation-duration: 1.8s;">
+            <div class="w-5 h-5 bg-orange-400 rounded-full"></div>
+            <div class="w-3 h-6 bg-cyan-500 rounded mt-1"></div>
+            <div class="absolute -bottom-2 -left-1 w-3 h-3 border-2 border-gray-600 rounded-full bg-transparent"></div>
+            <div class="absolute -bottom-2 right-1 w-3 h-3 border-2 border-gray-600 rounded-full bg-transparent"></div>
+            <div class="absolute -top-2 right-0 text-xs">🚲</div>
+        </div>
+        
+        <!-- 打籃球的學生 -->
+        <div class="absolute bottom-26 animate-pulse" style="left: 45%; animation-duration: 2.2s;">
+            <div class="w-6 h-6 bg-brown-400 rounded-full"></div>
+            <div class="w-4 h-8 bg-orange-500 rounded mt-1"></div>
+            <div class="w-2 h-4 bg-blue-600 rounded mt-1"></div>
+            <div class="absolute -top-4 left-2 w-2 h-2 bg-orange-600 rounded-full animate-bounce"></div>
+            <div class="absolute -top-2 right-0 text-xs">🏀</div>
+        </div>
+        
+        <!-- 飛行的紙飛機群 -->
+        <div class="absolute top-32 animate-ping" style="left: 30%; animation-duration: 4s;">
+            <div class="w-0 h-0 border-l-8 border-r-8 border-b-4 border-l-transparent border-r-transparent border-b-white transform rotate-45"></div>
+        </div>
+        <div class="absolute top-28 animate-ping" style="right: 25%; animation-duration: 5s; animation-delay: 1s;">
+            <div class="w-0 h-0 border-l-6 border-r-6 border-b-3 border-l-transparent border-r-transparent border-b-blue-200 transform rotate-12"></div>
+        </div>
+        
+        <!-- 飄落的櫻花群 -->
+        <div class="absolute animate-bounce" style="top: 20%; left: 70%; animation-duration: 6s;">
+            <div class="w-2 h-2 bg-pink-300 rounded-full"></div>
+        </div>
+        <div class="absolute animate-bounce" style="top: 30%; left: 20%; animation-duration: 5s; animation-delay: 1s;">
+            <div class="w-2 h-2 bg-pink-300 rounded-full"></div>
+        </div>
+        <div class="absolute animate-bounce" style="top: 40%; right: 30%; animation-duration: 7s; animation-delay: 2s;">
+            <div class="w-2 h-2 bg-pink-300 rounded-full"></div>
+        </div>
+        <div class="absolute animate-bounce" style="top: 15%; left: 40%; animation-duration: 8s; animation-delay: 3s;">
+            <div class="w-2 h-2 bg-pink-400 rounded-full"></div>
+        </div>
+        <div class="absolute animate-bounce" style="top: 35%; right: 15%; animation-duration: 6.5s; animation-delay: 1.5s;">
+            <div class="w-2 h-2 bg-pink-200 rounded-full"></div>
+        </div>
+        
+        <!-- 飛舞的蝴蝶 -->
+        <div class="absolute animate-ping" style="top: 25%; left: 55%; animation-duration: 4s;">
+            <div class="text-lg">🦋</div>
+        </div>
+        <div class="absolute animate-ping" style="top: 45%; right: 45%; animation-duration: 5s; animation-delay: 2s;">
+            <div class="text-lg">🦋</div>
+        </div>
+        
+        <!-- 閃爍的星星效果 -->
+        <div class="absolute top-12 left-1/3 w-1 h-1 bg-yellow-200 rounded-full animate-ping" style="animation-duration: 3s;"></div>
+        <div class="absolute top-20 right-1/3 w-1 h-1 bg-yellow-200 rounded-full animate-ping" style="animation-duration: 4s; animation-delay: 1s;"></div>
+        <div class="absolute top-16 left-2/3 w-1 h-1 bg-yellow-200 rounded-full animate-ping" style="animation-duration: 5s; animation-delay: 2s;"></div>
+        <div class="absolute top-24 left-1/4 w-1 h-1 bg-yellow-300 rounded-full animate-ping" style="animation-duration: 3.5s; animation-delay: 0.5s;"></div>
+        <div class="absolute top-18 right-1/4 w-1 h-1 bg-yellow-300 rounded-full animate-ping" style="animation-duration: 4.5s; animation-delay: 2.5s;"></div>
+        
+        <!-- 校園小鳥 -->
+        <div class="absolute animate-bounce" style="top: 22%; left: 80%; animation-duration: 3s;">
+            <div class="text-sm">🐦</div>
+        </div>
+        <div class="absolute animate-bounce" style="top: 18%; right: 20%; animation-duration: 4s; animation-delay: 1s;">
+            <div class="text-sm">🐦</div>
+        </div>
+    </div>
+    
+    <!-- 內容區域 -->
+    <div class="relative z-10 bg-black bg-opacity-20 min-h-screen backdrop-blur-sm">
+        <!-- 首頁 - 題目選擇 -->
+        <div id="homePage" class="container mx-auto px-4 py-8">
+        <div class="text-center mb-8">
+            <h1 class="text-5xl font-bold text-white mb-4">🎓 百萬小學堂 🎓</h1>
+            <p class="text-xl text-blue-100 mb-6">選擇一個題目開始挑戰！</p>
+            <button onclick="resetAllQuestions()" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-bold transition-colors">
+                🔄 重置所有題目
+            </button>
+        </div>
+        
+        <div class="grid grid-cols-5 gap-6 max-w-4xl mx-auto">
+            <!-- 20個題目球會在這裡生成 -->
+        </div>
+    </div>
+
+    <!-- 題目頁面 -->
+    <div id="questionPage" class="hidden container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-6">
+                <button onclick="goHome()" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg mb-4">
+                    ← 回首頁
+                </button>
+                <h2 class="text-3xl font-bold text-white mb-2">題目 <span id="currentQuestionNumber"></span></h2>
+            </div>
+
+            <!-- 題目標題 -->
+            <div class="bg-white rounded-lg p-6 mb-6 text-center">
+                <h3 class="text-2xl font-bold text-gray-800" id="questionText"></h3>
+            </div>
+
+            <!-- 選項卡片區域 -->
+            <div class="grid grid-cols-2 gap-4 mb-6" id="optionsContainer">
+                <!-- 選項卡片會在這裡生成 -->
+            </div>
+
+            <!-- 控制按鈕 -->
+            <div class="text-center">
+                <button onclick="showAllAnswers()" class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-lg font-bold text-xl mr-4">
+                    👁️ 看所有解析
+                </button>
+                <button onclick="showAllFortunes()" class="bg-purple-500 hover:bg-purple-600 text-white px-8 py-4 rounded-lg font-bold text-xl">
+                    🎲 機會與命運
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 機會與命運頁面 -->
+    <div id="fortunePage" class="hidden container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-bold text-white mb-8">🎲 機會與命運 🎲</h2>
+            
+            <!-- 機會命運卡片區域 -->
+            <div class="grid grid-cols-2 gap-4 mb-8" id="fortuneCardsContainer">
+                <!-- 機會命運卡片會在這裡生成 -->
+            </div>
+            
+            <div class="text-center">
+                <button onclick="showAllFortuneDetails()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-lg font-bold text-xl mr-4">
+                    🔮 看詳細命運
+                </button>
+                <button onclick="goHome(); markQuestionComplete()" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-bold text-xl">
+                    🏠 回首頁
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 題目資料
+        const questions = [
+            {
+                question: "你最喜歡哪種學習方式？",
+                options: [
+                    {
+                        text: "A. 看書自學",
+                        score: 15,
+                        fortune: "機會",
+                        explanation: "自學能力強，培養獨立思考！",
+                        fortuneDetail: "機會：獲得額外學習資源"
+                    },
+                    {
+                        text: "B. 小組討論",
+                        score: 20,
+                        fortune: "機會", 
+                        explanation: "團隊合作，互相學習成長！",
+                        fortuneDetail: "機會：結交學習夥伴"
+                    },
+                    {
+                        text: "C. 聽老師講課",
+                        score: 10,
+                        fortune: "命運",
+                        explanation: "傳統學習，穩紮穩打！",
+                        fortuneDetail: "命運：需要更主動學習"
+                    },
+                    {
+                        text: "D. 實作練習",
+                        score: 25,
+                        fortune: "機會",
+                        explanation: "動手實作，學以致用！",
+                        fortuneDetail: "機會：獲得實務經驗"
+                    }
+                ]
+            },
+            {
+                question: "你最想去哪裡旅行？",
+                options: [
+                    {
+                        text: "A. 日本賞櫻",
+                        score: 18,
+                        fortune: "機會",
+                        explanation: "體驗異國文化，開拓視野！",
+                        fortuneDetail: "機會：遇見新朋友"
+                    },
+                    {
+                        text: "B. 歐洲古堡",
+                        score: 22,
+                        fortune: "機會",
+                        explanation: "探索歷史古蹟，增長見識！",
+                        fortuneDetail: "機會：發現隱藏景點"
+                    },
+                    {
+                        text: "C. 台灣環島",
+                        score: 15,
+                        fortune: "命運",
+                        explanation: "認識家鄉之美，在地深度遊！",
+                        fortuneDetail: "命運：天氣可能不佳"
+                    },
+                    {
+                        text: "D. 南極探險",
+                        score: 30,
+                        fortune: "機會",
+                        explanation: "勇敢冒險，挑戰極限！",
+                        fortuneDetail: "機會：看見極光奇景"
+                    }
+                ]
+            },
+            {
+                question: "你最喜歡的運動是？",
+                options: [
+                    {
+                        text: "A. 籃球",
+                        score: 20,
+                        fortune: "機會",
+                        explanation: "團隊運動，培養合作精神！",
+                        fortuneDetail: "機會：加入校隊"
+                    },
+                    {
+                        text: "B. 游泳",
+                        score: 25,
+                        fortune: "機會",
+                        explanation: "全身運動，強健體魄！",
+                        fortuneDetail: "機會：破個人紀錄"
+                    },
+                    {
+                        text: "C. 瑜珈",
+                        score: 12,
+                        fortune: "命運",
+                        explanation: "靜心修身，平衡身心！",
+                        fortuneDetail: "命運：需要更多耐心"
+                    },
+                    {
+                        text: "D. 攀岩",
+                        score: 28,
+                        fortune: "機會",
+                        explanation: "挑戰自我，突破極限！",
+                        fortuneDetail: "機會：征服新路線"
+                    }
+                ]
+            },
+            {
+                question: "你最想學習的技能是？",
+                options: [
+                    {
+                        text: "A. 程式設計",
+                        score: 30,
+                        fortune: "機會",
+                        explanation: "未來趨勢，邏輯思維訓練！",
+                        fortuneDetail: "機會：獲得實習機會"
+                    },
+                    {
+                        text: "B. 烹飪料理",
+                        score: 18,
+                        fortune: "機會",
+                        explanation: "生活技能，創意發揮！",
+                        fortuneDetail: "機會：開發新食譜"
+                    },
+                    {
+                        text: "C. 樂器演奏",
+                        score: 15,
+                        fortune: "命運",
+                        explanation: "陶冶性情，藝術修養！",
+                        fortuneDetail: "命運：需要長期練習"
+                    },
+                    {
+                        text: "D. 外語學習",
+                        score: 25,
+                        fortune: "機會",
+                        explanation: "國際溝通，拓展機會！",
+                        fortuneDetail: "機會：獲得交換機會"
+                    }
+                ]
+            },
+            {
+                question: "你最喜歡的季節是？",
+                options: [
+                    {
+                        text: "A. 春天",
+                        score: 20,
+                        fortune: "機會",
+                        explanation: "萬物復甦，充滿希望！",
+                        fortuneDetail: "機會：新的開始"
+                    },
+                    {
+                        text: "B. 夏天",
+                        score: 15,
+                        fortune: "命運",
+                        explanation: "熱情活力，戶外活動！",
+                        fortuneDetail: "命運：可能太炎熱"
+                    },
+                    {
+                        text: "C. 秋天",
+                        score: 25,
+                        fortune: "機會",
+                        explanation: "收穫季節，成果豐碩！",
+                        fortuneDetail: "機會：豐收好運"
+                    },
+                    {
+                        text: "D. 冬天",
+                        score: 12,
+                        fortune: "命運",
+                        explanation: "寧靜沉澱，內心平和！",
+                        fortuneDetail: "命運：需要保暖"
+                    }
+                ]
+            },
+            {
+                question: "你最想擁有的超能力是？",
+                options: [
+                    {
+                        text: "A. 飛行能力",
+                        score: 28,
+                        fortune: "機會",
+                        explanation: "自由翱翔，無拘無束！",
+                        fortuneDetail: "機會：探索新世界"
+                    },
+                    {
+                        text: "B. 讀心術",
+                        score: 22,
+                        fortune: "機會",
+                        explanation: "了解他人，溝通無礙！",
+                        fortuneDetail: "機會：化解誤會"
+                    },
+                    {
+                        text: "C. 隱形能力",
+                        score: 10,
+                        fortune: "命運",
+                        explanation: "低調行事，避免麻煩！",
+                        fortuneDetail: "命運：可能太孤單"
+                    },
+                    {
+                        text: "D. 時間控制",
+                        score: 35,
+                        fortune: "機會",
+                        explanation: "掌控時間，改變命運！",
+                        fortuneDetail: "機會：重來機會"
+                    }
+                ]
+            },
+            {
+                question: "你最喜歡的顏色是？",
+                options: [
+                    {
+                        text: "A. 藍色",
+                        score: 18,
+                        fortune: "機會",
+                        explanation: "冷靜理性，值得信賴！",
+                        fortuneDetail: "機會：獲得他人信任"
+                    },
+                    {
+                        text: "B. 紅色",
+                        score: 25,
+                        fortune: "機會",
+                        explanation: "熱情活力，勇往直前！",
+                        fortuneDetail: "機會：成為領導者"
+                    },
+                    {
+                        text: "C. 綠色",
+                        score: 15,
+                        fortune: "命運",
+                        explanation: "自然和諧，平衡穩定！",
+                        fortuneDetail: "命運：需要更多行動"
+                    },
+                    {
+                        text: "D. 紫色",
+                        score: 22,
+                        fortune: "機會",
+                        explanation: "神秘優雅，獨特品味！",
+                        fortuneDetail: "機會：展現個人魅力"
+                    }
+                ]
+            },
+            {
+                question: "你最想住在哪種環境？",
+                options: [
+                    {
+                        text: "A. 繁華都市",
+                        score: 20,
+                        fortune: "機會",
+                        explanation: "機會豐富，生活便利！",
+                        fortuneDetail: "機會：職涯發展"
+                    },
+                    {
+                        text: "B. 寧靜鄉村",
+                        score: 15,
+                        fortune: "命運",
+                        explanation: "遠離塵囂，心靈平靜！",
+                        fortuneDetail: "命運：資源較少"
+                    },
+                    {
+                        text: "C. 海邊小鎮",
+                        score: 25,
+                        fortune: "機會",
+                        explanation: "面朝大海，心胸開闊！",
+                        fortuneDetail: "機會：靈感泉源"
+                    },
+                    {
+                        text: "D. 山中小屋",
+                        score: 18,
+                        fortune: "機會",
+                        explanation: "親近自然，身心健康！",
+                        fortuneDetail: "機會：發現自然奧秘"
+                    }
+                ]
+            },
+            {
+                question: "你最喜歡的動物是？",
+                options: [
+                    {
+                        text: "A. 貓咪",
+                        score: 16,
+                        fortune: "命運",
+                        explanation: "獨立自主，優雅迷人！",
+                        fortuneDetail: "命運：有時太任性"
+                    },
+                    {
+                        text: "B. 狗狗",
+                        score: 22,
+                        fortune: "機會",
+                        explanation: "忠誠友善，最佳夥伴！",
+                        fortuneDetail: "機會：結交真心朋友"
+                    },
+                    {
+                        text: "C. 老鷹",
+                        score: 28,
+                        fortune: "機會",
+                        explanation: "高瞻遠矚，勇敢翱翔！",
+                        fortuneDetail: "機會：看見更大格局"
+                    },
+                    {
+                        text: "D. 海豚",
+                        score: 24,
+                        fortune: "機會",
+                        explanation: "聰明友善，溝通高手！",
+                        fortuneDetail: "機會：成為溝通橋樑"
+                    }
+                ]
+            },
+            {
+                question: "你最想從事的職業是？",
+                options: [
+                    {
+                        text: "A. 老師",
+                        score: 20,
+                        fortune: "機會",
+                        explanation: "傳道授業，影響他人！",
+                        fortuneDetail: "機會：培育未來人才"
+                    },
+                    {
+                        text: "B. 醫生",
+                        score: 30,
+                        fortune: "機會",
+                        explanation: "救死扶傷，崇高使命！",
+                        fortuneDetail: "機會：拯救生命"
+                    },
+                    {
+                        text: "C. 藝術家",
+                        score: 18,
+                        fortune: "命運",
+                        explanation: "創意無限，表達自我！",
+                        fortuneDetail: "命運：收入不穩定"
+                    },
+                    {
+                        text: "D. 企業家",
+                        score: 35,
+                        fortune: "機會",
+                        explanation: "創新創業，改變世界！",
+                        fortuneDetail: "機會：創造就業機會"
+                    }
+                ]
+            },
+            {
+                question: "你最喜歡的食物類型是？",
+                options: [
+                    {
+                        text: "A. 中式料理",
+                        score: 18,
+                        fortune: "機會",
+                        explanation: "傳統美味，文化傳承！",
+                        fortuneDetail: "機會：學習傳統技藝"
+                    },
+                    {
+                        text: "B. 日式料理",
+                        score: 22,
+                        fortune: "機會",
+                        explanation: "精緻美學，健康養生！",
+                        fortuneDetail: "機會：體驗職人精神"
+                    },
+                    {
+                        text: "C. 義式料理",
+                        score: 20,
+                        fortune: "機會",
+                        explanation: "浪漫情調，家庭溫暖！",
+                        fortuneDetail: "機會：享受慢活生活"
+                    },
+                    {
+                        text: "D. 素食料理",
+                        score: 15,
+                        fortune: "命運",
+                        explanation: "健康環保，愛護地球！",
+                        fortuneDetail: "命運：選擇較少"
+                    }
+                ]
+            },
+            {
+                question: "你最想要的生活節奏是？",
+                options: [
+                    {
+                        text: "A. 快節奏",
+                        score: 25,
+                        fortune: "機會",
+                        explanation: "效率至上，成就滿滿！",
+                        fortuneDetail: "機會：快速成長"
+                    },
+                    {
+                        text: "B. 慢節奏",
+                        score: 18,
+                        fortune: "命運",
+                        explanation: "享受當下，品味生活！",
+                        fortuneDetail: "命運：可能錯過機會"
+                    },
+                    {
+                        text: "C. 有彈性",
+                        score: 22,
+                        fortune: "機會",
+                        explanation: "靈活應變，平衡兼顧！",
+                        fortuneDetail: "機會：適應各種情況"
+                    },
+                    {
+                        text: "D. 規律穩定",
+                        score: 16,
+                        fortune: "命運",
+                        explanation: "按部就班，安全穩妥！",
+                        fortuneDetail: "命運：缺乏驚喜"
+                    }
+                ]
+            },
+            {
+                question: "你最重視的價值觀是？",
+                options: [
+                    {
+                        text: "A. 誠實正直",
+                        score: 25,
+                        fortune: "機會",
+                        explanation: "品格高尚，值得信賴！",
+                        fortuneDetail: "機會：獲得他人尊重"
+                    },
+                    {
+                        text: "B. 創新進取",
+                        score: 30,
+                        fortune: "機會",
+                        explanation: "勇於突破，引領潮流！",
+                        fortuneDetail: "機會：成為先驅者"
+                    },
+                    {
+                        text: "C. 和諧共處",
+                        score: 18,
+                        fortune: "命運",
+                        explanation: "重視關係，團結合作！",
+                        fortuneDetail: "命運：有時需要妥協"
+                    },
+                    {
+                        text: "D. 自由獨立",
+                        score: 22,
+                        fortune: "機會",
+                        explanation: "追求自我，不受束縛！",
+                        fortuneDetail: "機會：開創自己的路"
+                    }
+                ]
+            },
+            {
+                question: "你最想擁有的才能是？",
+                options: [
+                    {
+                        text: "A. 音樂天賦",
+                        score: 20,
+                        fortune: "機會",
+                        explanation: "感動人心，藝術修養！",
+                        fortuneDetail: "機會：成為音樂家"
+                    },
+                    {
+                        text: "B. 運動天賦",
+                        score: 25,
+                        fortune: "機會",
+                        explanation: "強健體魄，競技精神！",
+                        fortuneDetail: "機會：成為運動員"
+                    },
+                    {
+                        text: "C. 語言天賦",
+                        score: 28,
+                        fortune: "機會",
+                        explanation: "溝通無礙，國際視野！",
+                        fortuneDetail: "機會：成為外交官"
+                    },
+                    {
+                        text: "D. 數學天賦",
+                        score: 15,
+                        fortune: "命運",
+                        explanation: "邏輯清晰，理性思考！",
+                        fortuneDetail: "命運：可能太理性"
+                    }
+                ]
+            },
+            {
+                question: "你最喜歡的休閒活動是？",
+                options: [
+                    {
+                        text: "A. 看電影",
+                        score: 16,
+                        fortune: "命運",
+                        explanation: "放鬆娛樂，體驗故事！",
+                        fortuneDetail: "命運：容易沉迷"
+                    },
+                    {
+                        text: "B. 閱讀書籍",
+                        score: 22,
+                        fortune: "機會",
+                        explanation: "增長知識，開拓視野！",
+                        fortuneDetail: "機會：獲得新知識"
+                    },
+                    {
+                        text: "C. 戶外健行",
+                        score: 25,
+                        fortune: "機會",
+                        explanation: "親近自然，強身健體！",
+                        fortuneDetail: "機會：發現美景"
+                    },
+                    {
+                        text: "D. 手作DIY",
+                        score: 20,
+                        fortune: "機會",
+                        explanation: "動手創作，成就感滿滿！",
+                        fortuneDetail: "機會：開發新技能"
+                    }
+                ]
+            },
+            {
+                question: "你最想要的人際關係是？",
+                options: [
+                    {
+                        text: "A. 知心好友",
+                        score: 25,
+                        fortune: "機會",
+                        explanation: "深度交流，互相支持！",
+                        fortuneDetail: "機會：遇見知音"
+                    },
+                    {
+                        text: "B. 廣泛人脈",
+                        score: 22,
+                        fortune: "機會",
+                        explanation: "資源豐富，機會多多！",
+                        fortuneDetail: "機會：拓展事業"
+                    },
+                    {
+                        text: "C. 家庭和睦",
+                        score: 20,
+                        fortune: "機會",
+                        explanation: "溫暖支持，幸福美滿！",
+                        fortuneDetail: "機會：家庭和諧"
+                    },
+                    {
+                        text: "D. 獨來獨往",
+                        score: 12,
+                        fortune: "命運",
+                        explanation: "自由自在，不受拘束！",
+                        fortuneDetail: "命運：可能孤單"
+                    }
+                ]
+            },
+            {
+                question: "你最想達成的目標是？",
+                options: [
+                    {
+                        text: "A. 事業成功",
+                        score: 30,
+                        fortune: "機會",
+                        explanation: "努力奮鬥，成就非凡！",
+                        fortuneDetail: "機會：獲得升遷"
+                    },
+                    {
+                        text: "B. 家庭幸福",
+                        score: 25,
+                        fortune: "機會",
+                        explanation: "愛與被愛，溫暖人生！",
+                        fortuneDetail: "機會：建立美滿家庭"
+                    },
+                    {
+                        text: "C. 健康長壽",
+                        score: 20,
+                        fortune: "機會",
+                        explanation: "身心健康，享受人生！",
+                        fortuneDetail: "機會：保持活力"
+                    },
+                    {
+                        text: "D. 內心平靜",
+                        score: 18,
+                        fortune: "命運",
+                        explanation: "心靈富足，知足常樂！",
+                        fortuneDetail: "命運：需要修練"
+                    }
+                ]
+            },
+            {
+                question: "你最喜歡的學習環境是？",
+                options: [
+                    {
+                        text: "A. 安靜圖書館",
+                        score: 20,
+                        fortune: "機會",
+                        explanation: "專注學習，效率提升！",
+                        fortuneDetail: "機會：深度思考"
+                    },
+                    {
+                        text: "B. 咖啡廳",
+                        score: 18,
+                        fortune: "命運",
+                        explanation: "輕鬆氛圍，靈感湧現！",
+                        fortuneDetail: "命運：容易分心"
+                    },
+                    {
+                        text: "C. 戶外公園",
+                        score: 22,
+                        fortune: "機會",
+                        explanation: "自然環境，心情愉悅！",
+                        fortuneDetail: "機會：獲得靈感"
+                    },
+                    {
+                        text: "D. 自己房間",
+                        score: 15,
+                        fortune: "命運",
+                        explanation: "舒適熟悉，放鬆學習！",
+                        fortuneDetail: "命運：可能太舒適"
+                    }
+                ]
+            },
+            {
+                question: "你最想要的生活態度是？",
+                options: [
+                    {
+                        text: "A. 積極樂觀",
+                        score: 28,
+                        fortune: "機會",
+                        explanation: "正面思考，吸引好運！",
+                        fortuneDetail: "機會：感染他人"
+                    },
+                    {
+                        text: "B. 謹慎小心",
+                        score: 15,
+                        fortune: "命運",
+                        explanation: "深思熟慮，避免風險！",
+                        fortuneDetail: "命運：可能錯過機會"
+                    },
+                    {
+                        text: "C. 勇敢冒險",
+                        score: 25,
+                        fortune: "機會",
+                        explanation: "勇於嘗試，突破自我！",
+                        fortuneDetail: "機會：發現新可能"
+                    },
+                    {
+                        text: "D. 隨遇而安",
+                        score: 18,
+                        fortune: "命運",
+                        explanation: "順其自然，心境平和！",
+                        fortuneDetail: "命運：缺乏主動性"
+                    }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let completedQuestions = JSON.parse(localStorage.getItem('completedQuestions')) || [];
+
+        // 初始化頁面
+        function initializePage() {
+            generateQuestionBalls();
+            showPage('homePage');
+        }
+
+        // 生成題目球
+        function generateQuestionBalls() {
+            const container = document.querySelector('.grid');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 20; i++) {
+                const ball = document.createElement('div');
+                ball.className = `number-ball ${completedQuestions.includes(i) ? 'completed' : 'incomplete'}`;
+                ball.textContent = i + 1;
+                ball.onclick = () => startQuestion(i);
+                container.appendChild(ball);
+            }
+        }
+
+        // 開始答題
+        function startQuestion(questionIndex) {
+            currentQuestion = questionIndex;
+            const q = questions[questionIndex];
+            
+            document.getElementById('currentQuestionNumber').textContent = questionIndex + 1;
+            document.getElementById('questionText').textContent = q.question;
+            
+            // 生成選項卡片
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            q.options.forEach((option, index) => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'option-card';
+                cardDiv.innerHTML = `
+                    <div class="option-card-inner">
+                        <div class="option-card-front bg-blue-500 text-white cursor-pointer hover:bg-blue-600 transition-colors">
+                            <div class="text-xl font-bold">${option.text}</div>
+                        </div>
+                        <div class="option-card-back bg-green-100">
+                            <div class="text-lg font-bold text-green-800 mb-2">${option.text}</div>
+                            <div class="text-sm text-gray-700 mb-2">${option.explanation}</div>
+                            <div class="text-lg font-bold text-purple-600">
+                                ${option.fortune === '機會' ? '好運+10' : '挑戰-5'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                optionsContainer.appendChild(cardDiv);
+            });
+            
+            showPage('questionPage');
+        }
+
+        // 顯示所有解析
+        function showAllAnswers() {
+            const cards = document.querySelectorAll('.option-card');
+            cards.forEach(card => {
+                card.classList.add('flipped');
+            });
+        }
+
+        // 顯示機會與命運
+        function showAllFortunes() {
+            const q = questions[currentQuestion];
+            const fortuneContainer = document.getElementById('fortuneCardsContainer');
+            fortuneContainer.innerHTML = '';
+            
+            q.options.forEach((option, index) => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'fortune-card';
+                const isChance = option.fortune === '機會';
+                const bgColor = isChance ? 'bg-green-500' : 'bg-red-500';
+                const icon = isChance ? '🍀' : '💀';
+                
+                cardDiv.innerHTML = `
+                    <div class="fortune-card-inner">
+                        <div class="fortune-card-front ${bgColor} text-white cursor-pointer hover:opacity-90 transition-opacity">
+                            <div class="text-3xl mb-2">${icon}</div>
+                            <div class="text-lg font-bold">${option.text}</div>
+                            <div class="text-xl font-bold">${option.fortune}</div>
+                        </div>
+                        <div class="fortune-card-back bg-yellow-100">
+                            <div class="text-sm font-bold text-gray-800 mb-2">${option.text}</div>
+                            <div class="text-xs text-gray-600 mb-2">${option.fortuneDetail}</div>
+                            <div class="text-lg font-bold text-purple-600">
+                                ${option.fortune === '機會' ? '好運+10' : '挑戰-5'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                fortuneContainer.appendChild(cardDiv);
+            });
+            
+            showPage('fortunePage');
+        }
+
+        // 顯示所有命運詳情
+        function showAllFortuneDetails() {
+            const cards = document.querySelectorAll('.fortune-card');
+            cards.forEach(card => {
+                card.classList.add('flipped');
+            });
+        }
+
+        // 標記題目完成
+        function markQuestionComplete() {
+            if (!completedQuestions.includes(currentQuestion)) {
+                completedQuestions.push(currentQuestion);
+                localStorage.setItem('completedQuestions', JSON.stringify(completedQuestions));
+            }
+            generateQuestionBalls();
+        }
+
+        // 重置所有題目
+        function resetAllQuestions() {
+            completedQuestions = [];
+            localStorage.removeItem('completedQuestions');
+            generateQuestionBalls();
+        }
+
+        // 回首頁
+        function goHome() {
+            showPage('homePage');
+        }
+
+        // 顯示指定頁面
+        function showPage(pageId) {
+            const pages = ['homePage', 'questionPage', 'fortunePage'];
+            pages.forEach(page => {
+                document.getElementById(page).classList.add('hidden');
+            });
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+
+        // 頁面載入時初始化
+        window.onload = initializePage;
+    </script>
+    </div>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'977f44ade5eaa355',t:'MTc1NjY3MjA0My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
